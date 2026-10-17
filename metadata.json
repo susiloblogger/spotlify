@@ -1,0 +1,23 @@
+{
+  "name": "Spotlify",
+  "description": "Realtime synced Spotify lyrics overlay with customizable transparent gradient OSD for GNOME Shell.",
+  "uuid": "spotlify@jenova",
+  "shell-version": [
+    "46",
+    "47",
+    "48",
+    "49",
+    "50"
+  ],
+  "url": "https://github.com/jenova/spotlify",
+  "donations": {
+    "kofi": "jenova",
+    "github": "jenova",
+    "custom": [
+      "https://saweria.co/jenova",
+      "https://trakteer.id/jenova"
+    ]
+  },
+  "settings-schema": "org.gnome.shell.extensions.spotlify",
+  "version": 1
+}

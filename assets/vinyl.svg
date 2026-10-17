@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <radialGradient id="vinylShine" cx="50%" cy="50%" r="50%" fx="30%" fy="30%">
+      <stop offset="0%" stop-color="#3b694b" />
+      <stop offset="45%" stop-color="#183625" />
+      <stop offset="70%" stop-color="#0f2418" />
+      <stop offset="100%" stop-color="#08140d" />
+    </radialGradient>
+    <linearGradient id="sheen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.18)" />
+      <stop offset="45%" stop-color="rgba(255,255,255,0.02)" />
+      <stop offset="55%" stop-color="rgba(255,255,255,0.15)" />
+      <stop offset="100%" stop-color="rgba(255,255,255,0.0)" />
+    </linearGradient>
+  </defs>
+
+  <!-- Vinyl Outer Body -->
+  <circle cx="100" cy="100" r="96" fill="url(#vinylShine)" stroke="#1a3826" stroke-width="2" />
+
+  <!-- Concentric Grooves -->
+  <circle cx="100" cy="100" r="88" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1.2" />
+  <circle cx="100" cy="100" r="82" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="1" />
+  <circle cx="100" cy="100" r="76" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+  <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="1" />
+  <circle cx="100" cy="100" r="64" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1.2" />
+  <circle cx="100" cy="100" r="56" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="1" />
+  <circle cx="100" cy="100" r="48" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+
+  <!-- Light Sheen Reflection -->
+  <circle cx="100" cy="100" r="96" fill="url(#sheen)" />
+
+  <!-- Center Label -->
+  <circle cx="100" cy="100" r="32" fill="#b9d7be" stroke="#8cb494" stroke-width="1.5" />
+  <circle cx="100" cy="100" r="28" fill="none" stroke="#759c7d" stroke-width="0.8" stroke-dasharray="3,3" />
+
+  <!-- Center Spindle Hole -->
+  <circle cx="100" cy="100" r="8" fill="#141d17" stroke="#3d5743" stroke-width="1" />
+</svg>

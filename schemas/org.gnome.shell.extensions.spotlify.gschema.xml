@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="spotlify">
+  <enum id="org.gnome.shell.extensions.spotlify.DisplayMode">
+    <value value="0" nick="single"/>
+    <value value="1" nick="double"/>
+    <value value="2" nick="triple"/>
+  </enum>
+
+  <enum id="org.gnome.shell.extensions.spotlify.GradientDirection">
+    <value value="0" nick="none"/>
+    <value value="1" nick="vertical"/>
+    <value value="2" nick="horizontal"/>
+    <value value="3" nick="radial"/>
+  </enum>
+
+  <enum id="org.gnome.shell.extensions.spotlify.PositionPreset">
+    <value value="0" nick="top-left"/>
+    <value value="1" nick="top-center"/>
+    <value value="2" nick="top-right"/>
+    <value value="3" nick="middle-left"/>
+    <value value="4" nick="center"/>
+    <value value="5" nick="middle-right"/>
+    <value value="6" nick="bottom-left"/>
+    <value value="7" nick="bottom-center"/>
+    <value value="8" nick="bottom-right"/>
+    <value value="9" nick="custom"/>
+  </enum>
+
+  <schema id="org.gnome.shell.extensions.spotlify" path="/org/gnome/shell/extensions/spotlify/">
+    <!-- Appearance -->
+    <key name="display-mode" enum="org.gnome.shell.extensions.spotlify.DisplayMode">
+      <default>'triple'</default>
+      <summary>Display Mode</summary>
+      <description>Number of lyric lines to display (single, double, or triple).</description>
+    </key>
+    <key name="font-family" type="s">
+      <default>'Cantarell'</default>
+      <summary>Font Family</summary>
+      <description>Font family used to render the lyric text.</description>
+    </key>
+    <key name="font-size" type="i">
+      <default>16</default>
+      <summary>Active Line Font Size</summary>
+      <description>Font size of the active lyric line in points/pixels.</description>
+    </key>
+    <key name="font-bold" type="b">
+      <default>true</default>
+      <summary>Bold Font</summary>
+      <description>Whether to render active lyric line with bold weight.</description>
+    </key>
+    <key name="text-shadow" type="b">
+      <default>true</default>
+      <summary>Enable Text Shadow</summary>
+      <description>Add a soft dark shadow behind text to improve readability against bright backgrounds.</description>
+    </key>
+    <key name="text-align" type="s">
+      <default>'center'</default>
+      <summary>Text Alignment</summary>
+      <description>Alignment of lyric lines: left, center, or right.</description>
+    </key>
+
+    <!-- Colors & Gradient -->
+    <key name="active-color" type="s">
+      <default>'rgba(255, 255, 255, 1.0)'</default>
+      <summary>Active Lyric Color</summary>
+      <description>CSS color string for the active lyric line.</description>
+    </key>
+    <key name="inactive-color" type="s">
+      <default>'rgba(255, 255, 255, 0.55)'</default>
+      <summary>Inactive Lyric Color</summary>
+      <description>CSS color string for preceding and upcoming lyric lines.</description>
+    </key>
+    <key name="gradient-direction" enum="org.gnome.shell.extensions.spotlify.GradientDirection">
+      <default>'horizontal'</default>
+      <summary>Background Gradient Direction</summary>
+      <description>Direction of background gradient (none, vertical, horizontal, radial).</description>
+    </key>
+    <key name="gradient-start" type="s">
+      <default>'rgba(18, 18, 18, 0.75)'</default>
+      <summary>Gradient Start Color</summary>
+      <description>CSS RGBA color string for the starting color of the background gradient.</description>
+    </key>
+    <key name="gradient-end" type="s">
+      <default>'rgba(30, 215, 96, 0.18)'</default>
+      <summary>Gradient End Color</summary>
+      <description>CSS RGBA color string for the ending color of the background gradient.</description>
+    </key>
+    <key name="border-radius" type="i">
+      <default>12</default>
+      <summary>OSD Box Border Radius</summary>
+      <description>Corner rounding radius of the OSD container in pixels.</description>
+    </key>
+    <key name="padding" type="i">
+      <default>8</default>
+      <summary>OSD Box Padding</summary>
+      <description>Internal padding of the OSD container in pixels.</description>
+    </key>
+
+    <!-- Position & Layout -->
+    <key name="position-preset" enum="org.gnome.shell.extensions.spotlify.PositionPreset">
+      <default>'bottom-center'</default>
+      <summary>Position Preset</summary>
+      <description>Screen anchor preset for the OSD overlay.</description>
+    </key>
+    <key name="offset-x" type="i">
+      <default>0</default>
+      <summary>X Coordinate Offset</summary>
+      <description>Horizontal pixel offset from the selected anchor position.</description>
+    </key>
+    <key name="offset-y" type="i">
+      <default>-80</default>
+      <summary>Y Coordinate Offset</summary>
+      <description>Vertical pixel offset from the selected anchor position.</description>
+    </key>
+    <key name="monitor-index" type="i">
+      <default>-1</default>
+      <summary>Target Monitor</summary>
+      <description>Index of monitor to display OSD on (-1 for primary monitor).</description>
+    </key>
+    <key name="max-width" type="i">
+      <default>750</default>
+      <summary>Maximum OSD Width</summary>
+      <description>Maximum width of the OSD overlay in pixels.</description>
+    </key>
+    <key name="always-on-top" type="b">
+      <default>true</default>
+      <summary>Always on Top</summary>
+      <description>Keep the OSD overlay above other windows.</description>
+    </key>
+
+    <!-- Behavior & Sync -->
+    <key name="sync-offset" type="i">
+      <default>0</default>
+      <summary>Global Sync Offset</summary>
+      <description>Time offset in milliseconds to adjust lyric synchronization.</description>
+    </key>
+    <key name="animation-duration" type="i">
+      <default>250</default>
+      <summary>Animation Duration</summary>
+      <description>Transition animation duration in milliseconds.</description>
+    </key>
+    <key name="enable-netease" type="b">
+      <default>true</default>
+      <summary>Enable NetEase Fallback Provider</summary>
+      <description>Whether to query NetEase Cloud Music if LRCLIB does not have synced lyrics.</description>
+    </key>
+    <key name="show-unsynced-lyrics" type="b">
+      <default>false</default>
+      <summary>Show Unsynchronized Lyrics</summary>
+      <description>Whether to display plain lyrics if synchronized lyrics are not found.</description>
+    </key>
+    <key name="hide-when-paused" type="b">
+      <default>true</default>
+      <summary>Hide OSD When Paused</summary>
+      <description>Automatically hide the OSD when playback is paused or stopped.</description>
+    </key>
+    <key name="hide-when-no-lyrics" type="b">
+      <default>true</default>
+      <summary>Hide OSD When No Lyrics</summary>
+      <description>Automatically hide the OSD when no lyrics are found for current song.</description>
+    </key>
+    <key name="hide-in-fullscreen" type="b">
+      <default>true</default>
+      <summary>Hide OSD When Fullscreen</summary>
+      <description>Hide the OSD overlay when a window is in fullscreen mode.</description>
+    </key>
+    <key name="show-panel-indicator" type="b">
+      <default>true</default>
+      <summary>Show Panel Status Indicator</summary>
+      <description>Show an icon in the GNOME Shell top panel for quick actions.</description>
+    </key>
+    <key name="autostart-on-login" type="b">
+      <default>true</default>
+      <summary>Autostart on Login</summary>
+      <description>Automatically start Spotlify when logging into desktop session.</description>
+    </key>
+    <key name="toggle-shortcut" type="as">
+      <default>['&lt;Super&gt;&lt;Alt&gt;l']</default>
+      <summary>Toggle Shortcut</summary>
+      <description>Keybinding to toggle OSD visibility.</description>
+    </key>
+    <key name="osd-visible" type="b">
+      <default>true</default>
+      <summary>OSD Visibility State</summary>
+      <description>Current visibility toggle state for the OSD.</description>
+    </key>
+  </schema>
+</schemalist>

@@ -1,0 +1,149 @@
+/* Spotlify - Realtime Synced Spotify Lyrics OSD */
+
+.spotlify-osd-card {
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.40);
+    transition-duration: 200ms;
+    spacing: 16px;
+}
+
+/* ==================== LEFT PANE (Album Art Thumbnail) ==================== */
+.spotlify-left-pane {
+    width: 80px;
+    height: 80px;
+    min-width: 80px;
+    max-width: 80px;
+    min-height: 80px;
+    max-height: 80px;
+    padding: 0;
+    margin: 0;
+    border-radius: 12px;
+}
+
+.spotlify-art-container {
+    width: 80px;
+    height: 80px;
+    min-width: 80px;
+    max-width: 80px;
+    min-height: 80px;
+    max-height: 80px;
+    padding: 0;
+    margin: 0;
+}
+
+.spotlify-cover-art {
+    width: 80px;
+    height: 80px;
+}
+
+.spotlify-art-vinyl {
+    border-radius: 40px;
+}
+
+.spotlify-art-cover {
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+}
+
+/* ==================== RIGHT PANE (Header + Lyrics) ==================== */
+.spotlify-right-pane {
+    padding: 2px 4px;
+    margin: 0;
+    spacing: 6px;
+    min-width: 340px;
+}
+
+/* Header Row: [NOW PLAYING] • Track Title — Artist */
+.spotlify-header-box {
+    spacing: 6px;
+}
+
+.spotlify-meta-now-playing {
+    font-family: 'Cantarell', sans-serif;
+    font-size: 7pt;
+    font-weight: bold;
+    color: #1ed760;
+    letter-spacing: 1.2px;
+}
+
+.spotlify-meta-dot {
+    font-size: 8pt;
+    color: rgba(255, 255, 255, 0.35);
+    margin: 0 1px;
+}
+
+.spotlify-meta-title {
+    font-family: 'Cantarell', sans-serif;
+    font-size: 10.5pt;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.spotlify-meta-sep {
+    font-size: 8pt;
+    color: rgba(255, 255, 255, 0.35);
+    margin: 0 1px;
+}
+
+.spotlify-meta-artist {
+    font-family: 'Cantarell', sans-serif;
+    font-size: 9.5pt;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+/* ==================== LYRICS BODY ==================== */
+.spotlify-lyrics-body {
+    spacing: 4px;
+}
+
+.spotlify-active-row {
+    spacing: 10px;
+}
+
+.spotlify-accent-bar {
+    width: 3px;
+    min-width: 3px;
+    max-width: 3px;
+    min-height: 20px;
+    background-color: #1ed760;
+    border-radius: 2px;
+}
+
+.spotlify-upcoming-box {
+    spacing: 3px;
+}
+
+.spotlify-upcoming-indented {
+    margin-left: 13px; /* Matches 3px bar + 10px spacing */
+}
+
+.spotlify-lyric-line {
+    font-family: 'Cantarell', sans-serif;
+}
+
+.spotlify-lyric-active {
+    font-size: 15pt;
+    font-weight: bold;
+    color: #effdec;
+}
+
+.spotlify-lyric-next {
+    font-size: 11pt;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.spotlify-lyric-next-next {
+    font-size: 9.5pt;
+    color: rgba(255, 255, 255, 0.32);
+}
+
+.spotlify-text-shadow {
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.50);
+}
+
+/* ==================== TOP BAR INDICATOR ==================== */
+.spotlify-indicator-box {
+    spacing: 4px;
+}
