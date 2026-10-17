@@ -8,13 +8,13 @@
 [![License](https://img.shields.io/badge/License-GPL--2.0--or--later-green.svg)](LICENSE)
 [![EGO Ready](https://img.shields.io/badge/EGO-Reviewed%20%26%20Compliant-brightgreen)](https://extensions.gnome.org)
 
-**Spotlify** adalah ekstensi GNOME Shell modern, ringan, dan elegan yang mendeteksi lagu yang sedang diputar di Spotify Desktop secara realtime via D-Bus MPRIS, mengunduh lirik tersinkron (LRC) otomatis dari komunitas open-source, dan menampilkannya sebagai On-Screen Display (OSD) bergradasi transparan dengan tampilan album art langsung di desktop Linux Anda.
+**Spotlify** is a modern, lightweight, and elegant GNOME Shell extension that detects songs playing on Spotify Desktop in real time via D-Bus MPRIS, automatically fetches synchronized lyrics (LRC) from open-source community providers, and displays them as a floating, transparent gradient On-Screen Display (OSD) with album cover art directly on your Linux desktop.
 
 ---
 
-## 🎨 Pratinjau Desain OSD (*Dual-Pane Card*)
+## 🎨 OSD Design Preview (*Dual-Pane Card*)
 
-Spotlify mengusung desain *floating card* berestetika *glassmorphism* modern dengan pembagian dua panel:
+Spotlify features a floating card design with modern glassmorphism aesthetics divided into two panels:
 
 ```text
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
@@ -28,198 +28,199 @@ Spotlify mengusung desain *floating card* berestetika *glassmorphism* modern den
   Album Cover Art              Track Header + Synced Lyrics (Active Accent Bar)
 ```
 
-- **Panel Kiri**: Thumbnail sampul album (*Album Cover Art*) beresolusi tinggi dengan sistem unduhan *asynchronous* dan *cache* lokal otomatis.
-- **Panel Kanan**: 
-  - *Header Row*: Badge status `NOW PLAYING` yang rapi bersama judul lagu dan artis.
-  - *Lyrics Container*: Tampilan baris lirik dinamis dengan aksen vertikal hijau khas Spotify (`▌`) pada baris lirik yang sedang aktif.
+- **Left Pane**: High-resolution album cover art thumbnail with asynchronous downloading and automated local disk caching.
+- **Right Pane**:
+  - *Header Row*: A clean `NOW PLAYING` status badge alongside the track title and artist name.
+  - *Lyrics Container*: Dynamic lyric lines with Spotify's signature green vertical accent bar (`▌`) highlighting the active line.
 
 ---
 
-## ✨ Fitur Unggulan
+## ✨ Key Features
 
-### ⏱ 1. Sinkronisasi Presisi Tinggi & Ultra-Low CPU (< 1%)
-- **Estimasi Monotonik Lokal**: Menghitung pergeseran waktu lagu secara lokal berbasis `GLib.get_monotonic_time()` untuk mencegah *lag* atau jeda sinkronisasi.
-- **Event-Driven Scheduler**: Menggunakan `GLib.timeout_add` yang dijadwalkan tepat ke *timestamp* baris lirik berikutnya, bukan melalui teknik *polling* intensif setiap 100ms. Penggunaan CPU tetap berada di bawah 1%.
-- **Auto Drift Resync**: Melakukan sinkronisasi ulang berkala via D-Bus MPRIS setiap ~2000ms dan mengoreksi waktu secara otomatis jika terjadi pergeseran (*drift*) > 500ms atau saat pengguna melakukan *seek*.
+### ⏱ 1. High-Precision Sync & Ultra-Low CPU (< 1%)
+- **Local Monotonic Interpolation**: Tracks playback position locally using `GLib.get_monotonic_time()` to prevent jitter or sync lag.
+- **Event-Driven Scheduler**: Uses `GLib.timeout_add` scheduled specifically to the timestamp of the next lyric line instead of aggressive 100ms polling loops. CPU consumption remains well below 1%.
+- **Automatic Drift Correction**: Periodically queries Spotify D-Bus every ~2000ms and reschedules instantly if drift exceeds 500ms or when seeking tracks.
 
-### 🪟 2. OSD Transparan Bergradasi & Click-Through
-- **Modern Glassmorphism**: Latar belakang OSD mendukung gradasi dinamis St Clutter (**Horizontal**, **Vertical**, **Radial**, atau **Solid**) dengan warna awal (*start*) dan akhir (*end*) yang dapat disesuaikan.
-- **Click-Through Non-Intrusive**: OSD melayang transparan di atas desktop tanpa mengganggu klik tetikus (*mouse*) atau interaksi aplikasi lain di bawahnya (`reactive: false`).
-- **Opsi Always on Top**: OSD dapat diatur agar selalu berada di lapisan terdepan jendela aplikasi.
-- **Pilihan 1, 2, atau 3 Baris**:
-  - *Triple Mode (3 Baris)*: Baris sebelumnya (redup), baris aktif (terang + *accent bar*), dan baris berikutnya (redup).
-  - *Double Mode (2 Baris)*: Baris aktif dan baris berikutnya.
-  - *Single Mode (1 Baris)*: Hanya baris aktif.
+### 🪟 2. Transparent Gradient OSD & Click-Through
+- **Modern Glassmorphism**: Dynamic St Clutter background gradients (**Horizontal**, **Vertical**, **Radial**, or **Solid**) with customizable start and end RGBA colors.
+- **Non-Intrusive Click-Through**: Floats transparently over your desktop without capturing mouse clicks or interfering with windows below (`reactive: false`).
+- **Always on Top Option**: Keep the lyrics card visible above application windows when desired.
+- **1, 2, or 3-Line Display Modes**:
+  - *Triple Mode (3 Lines)*: Previous line (dimmed), active line (bright + accent bar), and next line (dimmed).
+  - *Double Mode (2 Lines)*: Active line and next line.
+  - *Single Mode (1 Line)*: Active line only.
 
-### 🖼 3. Album Cover Art Loader & Caching Cerdas
-- Mengunduh gambar sampul album langsung dari metadata Spotify via `Soup.Session` (Soup 3.0) secara *non-blocking*.
-- Menyimpan *cache* gambar lokal di `~/.cache/spotlify/art/` dengan manajemen rotasi dan pembersihan berkala (*cache pruning*) saat sistem dalam kondisi *idle*.
-- Menampilkan ikon *fallback* vinil/audio yang anggun apabila sampul album belum atau tidak tersedia.
+### 🖼 3. Album Cover Art Loader & Intelligent Caching
+- Asynchronously downloads album artwork from Spotify metadata using `Soup.Session` (Soup 3.0) without blocking the UI.
+- Stores images locally in `~/.cache/spotlify/art/` with background rotation and automatic cache pruning during idle states.
+- Displays an elegant vinyl fallback icon when cover art is unavailable or loading.
 
-### 🎯 4. Multi-Provider Lirik & Pencocokan Ketat
-- **LRCLIB (Primer)**: Mengambil lirik tersinkronisasi dari basis data komunitas [LRCLIB](https://lrclib.net) secara cepat dan bebas pelacak.
-- **NetEase Cloud Music (Cadangan)**: Opsi sumber cadangan otomatis apabila lirik tidak ditemukan pada penyedia utama.
-- **Normalisasi Judul Lagu**: Algoritma pembersih judul yang cerdas (menghapus keterangan seperti `(Remastered ...)`, `(Live)`, `[feat. ...]`, `Deluxe Edition`, dll.).
-- **Toleransi Durasi Ketat (±2 Detik)**: Memvalidasi durasi lagu dengan ketat agar lirik yang dimuat sesuai dengan rekaman lagu yang sedang diputar.
-- **Two-Tier Cache**: Penyimpanan lirik ganda (*memory* + *disk* di `~/.cache/spotlify/`) disertai *negative cache* selama 24 jam untuk lagu tanpa lirik.
-- **Dukungan Instrumental**: Deteksi jeda instrumen otomatis yang divisualisasikan dengan simbol musik `♪`.
+### 🎯 4. Multi-Provider Lyrics & Strict Accuracy Matching
+- **LRCLIB (Primary)**: Fetches synchronized lyrics from the open [LRCLIB](https://lrclib.net) community database (fast, free, tracker-free).
+- **NetEase Cloud Music (Fallback)**: Automatic fallback provider if lyrics are not found on the primary source.
+- **Track Title Normalization**: Cleans metadata strings by stripping noise such as `(Remastered ...)`, `(Live)`, `[feat. ...]`, `Deluxe Edition`, etc.
+- **Strict Duration Tolerance (±2 Seconds)**: Verifies track lengths to guarantee lyrics match the exact recording.
+- **Two-Tier Cache**: Memory cache + persistent disk cache in `~/.cache/spotlify/` with 24-hour negative caching for instrumental or unlisted songs.
+- **Instrumental Detection**: Automatically indicates musical interludes with the musical symbol `♪`.
 
-### 🖥 5. Dukungan Multi-Monitor & 9 Titik Jangkar Layar
-- Menyediakan 9 preset penempatan layar instan:
+### 🖥 5. Multi-Monitor Support & 9 Screen Anchor Presets
+- 9 instant screen anchor presets:
   - `Top-Left`, `Top-Center`, `Top-Right`
   - `Middle-Left`, `Center`, `Middle-Right`
   - `Bottom-Left`, `Bottom-Center` *(Default)*, `Bottom-Right`
-- Penyesuaian presisi koordinat pixel horizontal (*Offset X*) dan vertikal (*Offset Y*).
-- Dukungan pemilihan monitor target tertentu atau monitor utama (*Primary Monitor*).
+- Fine-grained pixel adjustments for horizontal (*Offset X*) and vertical (*Offset Y*) positions.
+- Multi-monitor selector: bind OSD to a specific monitor or follow the primary display.
 
 ### 🛡 6. Smart Auto-Hide
-- Menyembunyikan OSD secara otomatis ketika:
-  - Musik dijeda (*Paused*) atau dihentikan (*Stopped*).
-  - Lagu yang diputar tidak memiliki lirik atau merupakan lagu instrumental.
-  - Terdapat aplikasi yang sedang berjalan dalam mode layar penuh (*Fullscreen*).
-  - Layar sistem terkunci (*Lock Screen*).
+- Automatically conceals the OSD when:
+  - Playback is paused or stopped.
+  - The current track has no lyrics or is purely instrumental.
+  - Any application window enters fullscreen mode.
+  - The desktop screen is locked.
 
-### 🔘 7. Menu Panel Atas (Top Bar Quick Controls)
-- Ikon indikator status terintegrasi pada panel atas GNOME:
-  - Sakelar cepat untuk menampilkan atau menyembunyikan OSD.
-  - Sakelar cepat status **Always on Top**.
-  - Submenu koreksi sinkronisasi instan: **Advance -250 ms**, **Delay +250 ms**, dan **Reset (0 ms)**.
-  - Pintasan langsung membuka jendela pengaturan Spotlify.
-  - Tombol **Exit** untuk keluar dan menonaktifkan ekstensi secara bersih dalam satu klik.
+### 🔘 7. Top Bar Quick Controls
+- Integrated status indicator on GNOME's top panel:
+  - Quick toggle for OSD visibility.
+  - Quick toggle for **Always on Top**.
+  - Instant sync offset adjustments: **Advance -250 ms**, **Delay +250 ms**, and **Reset (0 ms)**.
+  - Direct shortcut to open Spotlify Settings.
+  - **Exit** button to cleanly unload and disable the extension in one click.
 
-### ⌨️ 8. Pintasan Keyboard Global
-- Bawaan: `<Super><Alt>l` untuk beralih (*toggle*) visibilitas OSD seketika dari mana saja. Kombinasi tombol dapat diubah melalui menu pengaturan GNOME.
+### ⌨️ 8. Global Keyboard Shortcut
+- Default shortcut: `<Super><Alt>l` to toggle OSD visibility on demand from anywhere (customizable in GNOME Settings).
 
-### 🚀 9. Autostart on Login Terintegrasi
-- Opsi untuk mengaktifkan Spotlify secara otomatis setiap kali Anda masuk (*login*) ke sesi desktop GNOME melalui berkas `.desktop` standar di `~/.config/autostart/spotlify.desktop`.
+### 🚀 9. Seamless Autostart on Login
+- Automatically launches Spotlify whenever you log into your desktop session by managing a standard `.desktop` entry in `~/.config/autostart/spotlify.desktop`.
 
-### 🧩 10. Standar Kepatuhan EGO Penuh (Extensions.gnome.org)
-- Siklus hidup (*lifecycle*) bersih: seluruh sinyal GSettings, Clutter/St actor, koneksi D-Bus MPRIS, timer GLib, dan `Gio.Cancellable` dilepaskan tanpa sisa saat ekstensi dinonaktifkan (`disable()`), menjamin **nol kebocoran memori (zero memory leak)**.
-- Seluruh modul ditulis menggunakan standar ECMAScript Modules (ESM) modern.
+### 🧩 10. Strict EGO Review Compliance
+- Completely leak-free lifecycle: all GSettings signals, Clutter/St actors, D-Bus listeners, GLib timeout sources, and `Gio.Cancellable` requests are unconditionally released on `disable()`, guaranteeing **zero memory leaks**.
+- Built 100% on native ECMAScript Modules (ESM).
 
 ---
 
-## 🚀 Kompatibilitas
+## 🚀 Compatibility
 
-| Komponen | Spesifikasi yang Didukung |
+| Component | Supported Specification |
 |---|---|
 | **GNOME Shell** | `46`, `47`, `48`, `49`, `50` |
-| **Sesi Display** | Wayland Native & X11 |
-| **Aplikasi Spotify** | Spotify Desktop Native (`.deb`, `.rpm`), Flatpak (`com.spotify.Client`), dan Snap (`spotify`) |
-| **Arsitektur Kode** | ES Modules (ESM) + GJS modern |
-| **Pustaka Preferensi** | GTK4 + Libadwaita 1.5+ |
+| **Display Session** | Wayland Native & X11 |
+| **Spotify Client** | Spotify Desktop Native (`.deb`, `.rpm`), Flatpak (`com.spotify.Client`), and Snap (`spotify`) |
+| **Architecture** | Modern ES Modules (ESM) + GJS |
+| **Preferences UI** | GTK4 + Libadwaita 1.5+ |
 
 ---
 
-## ⚙️ Halaman Pengaturan (Preferences)
+## ⚙️ Preferences Guide (Libadwaita)
 
-Jendela pengaturan dibangun menggunakan **Libadwaita** modern dengan kategori yang tertata rapi:
+The preferences window is crafted with **Libadwaita** into clean, categorized sections:
 
-1. **Appearance (Tampilan)**:
-   - Jumlah baris lirik (Single / Double / Triple).
-   - Perataan teks lirik (Kiri, Tengah, Kanan).
-   - Pemilihan keluarga font (*Font Family*), ukuran teks (*Font Size*), opsi teks tebal (*Bold*), dan bayangan teks (*Text Shadow*).
-2. **Colors & Gradient (Warna & Gradasi)**:
-   - Warna teks lirik aktif (*Active Color*) & tidak aktif (*Inactive Color*).
-   - Arah gradasi latar belakang (None, Vertical, Horizontal, Radial).
-   - Penentuan warna gradasi awal (*Start Color*) dan akhir (*End Color*).
-   - Pengaturan *Border Radius* sudut melengkung dan *Padding* internal OSD.
-3. **Position & Layout (Posisi & Tata Letak)**:
-   - Pilihan 9 preset posisi jangkar layar atau posisi kustom.
-   - Penyetelan pergeseran piksel sumbu X dan Y.
-   - Pemilihan monitor target.
-   - Batas lebar maksimal OSD (*Max Width*) dan sakelar *Always on Top*.
-4. **Behavior & Synchronization (Perilaku & Sinkronisasi)**:
-   - Pengaturan *Global Sync Offset* waktu lirik (milidetik).
-   - Durasi animasi transisi baris lirik.
-   - Sakelar penyedia cadangan NetEase Cloud Music.
-   - Opsi menampilkan lirik polos (*Unsynchronized Lyrics*) jika lirik sinkron tidak ada.
-   - Aturan penyembunyian otomatis (*Hide when Paused*, *Hide when No Lyrics*, *Hide in Fullscreen*).
-   - Tampilkan/sembunyikan ikon indikator panel atas.
-   - Sakelar **Autostart on Login**.
-5. **Support & About (Dukungan & Informasi)**:
-   - Tautan langsung donasi pengembang (Saweria, Trakteer, Ko-fi, GitHub Sponsors).
-   - Informasi lisensi dan pelaporan *bug* / *issue* di GitHub.
+1. **Appearance**:
+   - Lyric line count (Single / Double / Triple).
+   - Text alignment (Left, Center, Right).
+   - Typography settings: Font Family, Active Font Size, Bold weight, and soft Text Shadow.
+2. **Colors & Gradient**:
+   - Active and inactive lyric text colors.
+   - Background gradient direction (None/Solid, Vertical, Horizontal, Radial).
+   - Gradient Start and End RGBA colors.
+   - Card border radius and internal padding.
+3. **Position & Layout**:
+   - 9 screen anchor presets or custom positioning.
+   - X and Y coordinate offsets in pixels.
+   - Target monitor index.
+   - Maximum card width and Always on Top toggle.
+4. **Behavior & Synchronization**:
+   - Global sync offset in milliseconds.
+   - Lyric line transition animation duration.
+   - NetEase Cloud Music fallback toggle.
+   - Option to display unsynchronized plain lyrics.
+   - Auto-hide rules (*Hide when Paused*, *Hide when No Lyrics*, *Hide in Fullscreen*).
+   - Top panel indicator visibility.
+   - **Autostart on Login** toggle.
+5. **Support & About**:
+   - Direct donation links (Saweria, Trakteer, Ko-fi, GitHub Sponsors).
+   - Extension version info, GitHub repository, and issue tracker links.
 
 ---
 
-## 📦 Pemasangan Manual
+## 📦 Manual Installation
 
-### 1. Kloning Repositori
+### 1. Clone the Repository
 ```bash
-git clone https://github.com/jenova/spotlify.git
+git clone https://github.com/susiloblogger/spotlify.git
 cd spotlify
 ```
 
-### 2. Pasang Symlink & Kompilasi Skema
+### 2. Link Extension & Compile Schemas
 ```bash
 make install
 ```
-*Perintah di atas akan mengompilasi schema GSettings dan membuat symlink ke direktori ekstensi pengguna: `~/.local/share/gnome-shell/extensions/spotlify@jenova`.*
+*This compiles the GSettings schema and creates a symlink to `~/.local/share/gnome-shell/extensions/spotlify@jenova`.*
 
-### 3. Muat Ulang GNOME Shell
-- **Pada Sesi Wayland**: Logout kemudian Login kembali ke akun Anda.
-- **Pada Sesi X11**: Tekan `Alt + F2`, ketik `r`, lalu tekan `Enter`.
+### 3. Restart GNOME Shell
+- **On Wayland**: Log out and log back into your user session.
+- **On X11**: Press `Alt + F2`, type `r`, and press `Enter`.
 
-### 4. Aktifkan Ekstensi
+### 4. Enable the Extension
 ```bash
 gnome-extensions enable spotlify@jenova
 ```
-Buka jendela pengaturan ekstensi kapan saja dengan perintah:
+
+Open the preferences window anytime with:
 ```bash
 gnome-extensions prefs spotlify@jenova
 ```
 
 ---
 
-## 🛠 Perintah Pengembangan (Makefile)
+## 🛠 Development & Testing Workflow (Makefile)
 
-Spotlify menyediakan alur kerja terstruktur untuk pengembangan dan pengujian otomatis:
+Spotlify comes with a streamlined Makefile for development, automated testing, and packaging:
 
 ```bash
-# Mengompilasi GSettings schema XML
+# Compile GSettings schema XML
 make schemas
 
-# Memasang ekstensi ke sistem lokal (symlink mode)
+# Install extension locally via symlink
 make install
 
-# Menjalankan seluruh rangkaian automated unit test
+# Run the complete automated unit test suite
 make test
 
-# Membuat paket rilis zip terverifikasi untuk extensions.gnome.org (EGO)
+# Build verified release zip package for extensions.gnome.org (EGO)
 make pack
 
-# Menampilkan stream log runtime ekstensi secara realtime
+# Stream extension runtime logs in real time
 make log
 
-# Membersihkan file build dan paket zip rilis
+# Clean build artifacts and packaged zip files
 make clean
 
-# Menghapus instalasi ekstensi dari sistem lokal
+# Remove extension symlink from local system
 make uninstall
 ```
 
-### 🧪 Cakupan Pengujian Unit (*Unit Test Suite*)
-Perintah `make test` menguji seluruh komponen inti logika secara otomatis menggunakan runtime `gjs`:
-- `tests/lrcParser.test.js`: Validasi parsing format timestamp LRC, multi-tag per baris, dan penanganan jeda instrumental.
-- `tests/trackMatcher.test.js`: Validasi normalisasi judul lagu dan pencocokan durasi toleransi ketat.
-- `tests/syncEngine.test.js`: Validasi algoritma pencarian posisi baris (*binary search*) dan sinkronisasi baris aktif.
-- `tests/coverArtLoader.test.js`: Validasi resolusi URI, hashing MD5, dan mekanisme penyimpanan *cache* sampul album.
-- `tests/autostartManager.test.js`: Validasi pembuatan dan pembacaan entri desktop autostart di sesi GNOME.
+### 🧪 Automated Unit Test Suite
+Running `make test` executes isolated unit tests using the `gjs` runtime:
+- `tests/lrcParser.test.js`: Validates timestamp parsing, multi-tags per line, and instrumental break handling.
+- `tests/trackMatcher.test.js`: Validates track title sanitization and strict duration matching algorithms.
+- `tests/syncEngine.test.js`: Validates binary search lookup and active line progression.
+- `tests/coverArtLoader.test.js`: Validates URI resolution, MD5 hashing, and disk cache storage.
+- `tests/autostartManager.test.js`: Validates desktop entry generation, detection, and autostart toggle behavior.
 
 ---
 
-## 💖 Dukungan & Donasi
+## 💖 Support & Donations
 
-Jika Spotlify bermanfaat dan mempercantik pengalaman mendengarkan musik di desktop GNOME Anda, pertimbangkan untuk mendukung kelanjutan proyek ini:
+If Spotlify enhances your daily music listening experience on GNOME, consider supporting ongoing development:
 
 - 🇮🇩 **Saweria (QRIS / GoPay / OVO / DANA)**: [saweria.co/susiloblogger](https://saweria.co/susiloblogger)
-- 🇮🇩 **Trakteer**: [trakteer.id/jenova](https://trakteer.id/susiloblogger)
-- ☕ **Ko-fi**: [ko-fi.com/jenova](https://ko-fi.com/susiloblogger)
-- 🐙 **GitHub Sponsors**: [github.com/sponsors/jenova](https://github.com/sponsors/susiloblogger)
+- 🇮🇩 **Trakteer**: [trakteer.id/susiloblogger](https://trakteer.id/susiloblogger)
+- ☕ **Ko-fi**: [ko-fi.com/susiloblogger](https://ko-fi.com/susiloblogger)
+- 🐙 **GitHub Sponsors**: [github.com/sponsors/susiloblogger](https://github.com/sponsors/susiloblogger)
 
 ---
 
-## 📄 Lisensi
+## 📄 License
 
-Proyek ini dirilis di bawah lisensi **GNU General Public License v2.0 or later (GPL-2.0-or-later)**. Lihat berkas [LICENSE](LICENSE) untuk informasi hak cipta dan ketentuan selengkapnya.
+Distributed under the **GNU General Public License v2.0 or later (GPL-2.0-or-later)**. See the [LICENSE](LICENSE) file for full details and copyright notices.
