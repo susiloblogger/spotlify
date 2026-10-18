@@ -53,6 +53,6 @@ pnpm-debug.log*
 .env.*.local
 
 # --- Agentic AI ---
-.agent/
+.agents/
 docs/
 tests/
