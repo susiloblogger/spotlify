@@ -3,7 +3,7 @@ UUID = spotlify@jenova
 SCHEMA_DIR = schemas
 EXTENSION_DIR = $(HOME)/.local/share/gnome-shell/extensions/$(UUID)
 
-.PHONY: all schemas install uninstall test pack clean log
+.PHONY: all schemas install uninstall test pack review clean log
 
 all: schemas
 
@@ -37,6 +37,9 @@ pack:
 		--schema=$(SCHEMA_DIR)/org.gnome.shell.extensions.spotlify.gschema.xml \
 		--force
 	@echo "Created package: $(UUID).shell-extension.zip"
+
+review: pack
+	shexli $(UUID).shell-extension.zip
 
 clean:
 	rm -f $(SCHEMA_DIR)/gschemas.compiled

@@ -13,10 +13,11 @@ import { SpotlifyIndicator } from './lib/panelIndicator.js';
 
 export default class SpotlifyExtension extends Extension {
     enable() {
-        console.log(`[Spotlify] Enabling ${this.metadata.name} v${this.metadata.version}`);
+        console.debug(`[Spotlify] Enabling ${this.metadata.name} v${this.metadata.version}`);
 
         this._settings = this.getSettings();
         this._settingsSignals = [];
+        this._disableIdleId = null;
 
         // 1. Initialize core subsystems
         this._osdWidget = new OsdWidget(this._settings);
@@ -96,7 +97,7 @@ export default class SpotlifyExtension extends Extension {
     async _handleTrackChanged(trackInfo) {
         if (!trackInfo || !trackInfo.title) return;
 
-        console.log(`[Spotlify] Now playing: ${trackInfo.title} by ${trackInfo.artist}`);
+        console.debug(`[Spotlify] Now playing: ${trackInfo.title} by ${trackInfo.artist}`);
 
         if (this._indicator) {
             this._indicator.setTrack(trackInfo.title, trackInfo.artist);
@@ -116,10 +117,10 @@ export default class SpotlifyExtension extends Extension {
         if (!this._syncEngine || !this._osdWidget) return;
 
         if (lyrics && lyrics.lines && lyrics.lines.length > 0) {
-            console.log(`[Spotlify] Loaded ${lyrics.lines.length} lines for ${trackInfo.title}`);
+            console.debug(`[Spotlify] Loaded ${lyrics.lines.length} lines for ${trackInfo.title}`);
             this._syncEngine.setLyrics(lyrics.lines);
         } else {
-            console.log(`[Spotlify] No lyrics found for ${trackInfo.title}`);
+            console.debug(`[Spotlify] No lyrics found for ${trackInfo.title}`);
             if (this._osdWidget) {
                 this._osdWidget.setLyrics('', '', '', '');
             }
@@ -136,7 +137,11 @@ export default class SpotlifyExtension extends Extension {
                     this.openPreferences();
                 },
                 () => {
-                    GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+                    if (this._disableIdleId) {
+                        GLib.Source.remove(this._disableIdleId);
+                    }
+                    this._disableIdleId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+                        this._disableIdleId = null;
                         Main.extensionManager.disableExtension(this.uuid);
                         return GLib.SOURCE_REMOVE;
                     });
@@ -167,9 +172,15 @@ export default class SpotlifyExtension extends Extension {
     }
 
     disable() {
-        console.log(`[Spotlify] Disabling ${this.metadata.name}`);
+        console.debug(`[Spotlify] Disabling ${this.metadata.name}`);
 
-        // 1. Remove keybinding
+        // 1. Remove pending disable idle callback
+        if (this._disableIdleId) {
+            GLib.Source.remove(this._disableIdleId);
+            this._disableIdleId = null;
+        }
+
+        // 2. Remove keybinding
         try {
             Main.wm.removeKeybinding('toggle-shortcut');
         } catch (e) {
