@@ -1,6 +1,5 @@
 import Adw from 'gi://Adw?version=1';
 import Gtk from 'gi://Gtk?version=4.0';
-import { AutostartManager } from '../lib/autostartManager.js';
 
 export class BehaviorPage {
     static build(settings) {
@@ -121,25 +120,6 @@ export class BehaviorPage {
         autoGroup.add(alwaysOnTopRow);
 
         page.add(autoGroup);
-
-        // Group 3: Startup & Session
-        const startupGroup = new Adw.PreferencesGroup({
-            title: 'Startup & Session',
-        });
-
-        const autostartRow = new Adw.SwitchRow({
-            title: 'Autostart on Login',
-            subtitle: 'Automatically start Spotlify when logging into desktop session',
-            active: settings.get_boolean('autostart-on-login'),
-        });
-        autostartRow.connect('notify::active', () => {
-            const active = autostartRow.get_active();
-            settings.set_boolean('autostart-on-login', active);
-            AutostartManager.setAutostart(active);
-        });
-        startupGroup.add(autostartRow);
-
-        page.add(startupGroup);
         return page;
     }
 }

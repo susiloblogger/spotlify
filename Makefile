@@ -25,7 +25,6 @@ test:
 	gjs -m tests/trackMatcher.test.js
 	gjs -m tests/syncEngine.test.js
 	gjs -m tests/coverArtLoader.test.js
-	gjs -m tests/autostartManager.test.js
 
 pack:
 	rm -f $(SCHEMA_DIR)/gschemas.compiled

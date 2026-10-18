@@ -9,13 +9,13 @@
     "49",
     "50"
   ],
-  "url": "https://github.com/jenova/spotlify",
+  "url": "https://github.com/susiloblogger/spotlify",
   "donations": {
-    "kofi": "jenova",
-    "github": "jenova",
+    "kofi": "susiloblogger",
+    "github": "susiloblogger",
     "custom": [
-      "https://saweria.co/jenova",
-      "https://trakteer.id/jenova"
+      "https://saweria.co/susiloblogger",
+      "https://trakteer.id/susiloblogger"
     ]
   },
   "settings-schema": "org.gnome.shell.extensions.spotlify",

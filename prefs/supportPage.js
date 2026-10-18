@@ -41,6 +41,7 @@ export class SupportPage {
         donateGroup.add(this._createLinkRow('Saweria', 'Support via QRIS / GoPay / OVO / DANA', 'https://saweria.co/susiloblogger', 'starred-symbolic'));
         donateGroup.add(this._createLinkRow('Ko-fi', 'Support via Ko-fi', 'https://ko-fi.com/susiloblogger', 'starred-symbolic'));
         donateGroup.add(this._createLinkRow('GitHub Sponsors', 'Sponsor the developer on GitHub', 'https://github.com/sponsors/susiloblogger', 'starred-symbolic'));
+        donateGroup.add(this._createLinkRow('PayPal', 'Donate via PayPal', 'https://www.paypal.com/ncp/payment/N8LFPVQL9GJN2', 'starred-symbolic'));
 
         page.add(donateGroup);
 
@@ -56,7 +57,7 @@ export class SupportPage {
         aboutGroup.add(versionRow);
 
         aboutGroup.add(this._createLinkRow('GitHub Repository', 'https://github.com/susiloblogger/spotlify', 'https://github.com/susiloblogger/spotlify'));
-        aboutGroup.add(this._createLinkRow('Report an Issue / Bug', 'Open an issue on GitHub', 'https://github.com/jenova/spotlify/issues'));
+        aboutGroup.add(this._createLinkRow('Report an Issue / Bug', 'Open an issue on GitHub', 'https://github.com/susiloblogger/spotlify/issues'));
 
         page.add(aboutGroup);
 

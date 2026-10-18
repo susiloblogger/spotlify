@@ -170,9 +170,9 @@
       <description>Show an icon in the GNOME Shell top panel for quick actions.</description>
     </key>
     <key name="autostart-on-login" type="b">
-      <default>true</default>
+      <default>false</default>
       <summary>Autostart on Login</summary>
-      <description>Automatically start Spotlify when logging into desktop session.</description>
+      <description>Deprecated setting kept for backwards compatibility.</description>
     </key>
     <key name="toggle-shortcut" type="as">
       <default>['&lt;Super&gt;&lt;Alt&gt;l']</default>

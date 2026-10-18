@@ -10,7 +10,6 @@ import { MprisClient } from './lib/mprisClient.js';
 import { LyricsManager } from './lib/lyrics/lyricsManager.js';
 import { SyncEngine } from './lib/syncEngine.js';
 import { SpotlifyIndicator } from './lib/panelIndicator.js';
-import { AutostartManager } from './lib/autostartManager.js';
 
 export default class SpotlifyExtension extends Extension {
     enable() {
@@ -92,13 +91,6 @@ export default class SpotlifyExtension extends Extension {
                 this._osdWidget.setFullscreen(isFullscreen);
             }
         });
-
-        // 6. Manage autostart on login
-        AutostartManager.syncWithSettings(this._settings);
-        const autostartSignalId = this._settings.connect('changed::autostart-on-login', () => {
-            AutostartManager.syncWithSettings(this._settings);
-        });
-        this._settingsSignals.push(autostartSignalId);
     }
 
     async _handleTrackChanged(trackInfo) {
@@ -121,6 +113,7 @@ export default class SpotlifyExtension extends Extension {
         }
 
         const lyrics = await this._lyricsManager.getLyrics(trackInfo);
+        if (!this._syncEngine || !this._osdWidget) return;
 
         if (lyrics && lyrics.lines && lyrics.lines.length > 0) {
             console.log(`[Spotlify] Loaded ${lyrics.lines.length} lines for ${trackInfo.title}`);

@@ -90,10 +90,7 @@ Spotlify features a floating card design with modern glassmorphism aesthetics di
 ### ⌨️ 8. Global Keyboard Shortcut
 - Default shortcut: `<Super><Alt>l` to toggle OSD visibility on demand from anywhere (customizable in GNOME Settings).
 
-### 🚀 9. Seamless Autostart on Login
-- Automatically launches Spotlify whenever you log into your desktop session by managing a standard `.desktop` entry in `~/.config/autostart/spotlify.desktop`.
-
-### 🧩 10. Strict EGO Review Compliance
+### 🧩 9. Strict EGO Review Compliance
 - Completely leak-free lifecycle: all GSettings signals, Clutter/St actors, D-Bus listeners, GLib timeout sources, and `Gio.Cancellable` requests are unconditionally released on `disable()`, guaranteeing **zero memory leaks**.
 - Built 100% on native ECMAScript Modules (ESM).
 
@@ -136,7 +133,6 @@ The preferences window is crafted with **Libadwaita** into clean, categorized se
    - Option to display unsynchronized plain lyrics.
    - Auto-hide rules (*Hide when Paused*, *Hide when No Lyrics*, *Hide in Fullscreen*).
    - Top panel indicator visibility.
-   - **Autostart on Login** toggle.
 5. **Support & About**:
    - Direct donation links (Saweria, Trakteer, Ko-fi, GitHub Sponsors).
    - Extension version info, GitHub repository, and issue tracker links.
@@ -206,7 +202,6 @@ Running `make test` executes isolated unit tests using the `gjs` runtime:
 - `tests/trackMatcher.test.js`: Validates track title sanitization and strict duration matching algorithms.
 - `tests/syncEngine.test.js`: Validates binary search lookup and active line progression.
 - `tests/coverArtLoader.test.js`: Validates URI resolution, MD5 hashing, and disk cache storage.
-- `tests/autostartManager.test.js`: Validates desktop entry generation, detection, and autostart toggle behavior.
 
 ---
 
