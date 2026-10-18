@@ -55,4 +55,3 @@ pnpm-debug.log*
 # --- Agentic AI ---
 .agents/
 docs/
-tests/
