@@ -51,7 +51,7 @@ export class AppearancePage {
             title: 'Active Text Size',
             subtitle: 'Font size of the active lyric line (pt)',
             adjustment: new Gtk.Adjustment({
-                lower: 12,
+                lower: 8,
                 upper: 64,
                 step_increment: 1,
                 page_increment: 4,
