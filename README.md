@@ -82,7 +82,6 @@ Spotlify features a floating card design with modern glassmorphism aesthetics di
 ### 🔘 7. Top Bar Quick Controls
 - Integrated status indicator on GNOME's top panel:
   - Quick toggle for OSD visibility.
-  - Quick toggle for **Always on Top**.
   - Instant sync offset adjustments: **Advance -250 ms**, **Delay +250 ms**, and **Reset (0 ms)**.
   - Direct shortcut to open Spotlify Settings.
   - **Exit** button to cleanly unload and disable the extension in one click.
