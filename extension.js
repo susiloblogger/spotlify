@@ -87,7 +87,14 @@ export default class SpotlifyExtension extends Extension {
 
         // 5. Watch fullscreen changes
         this._fullscreenSignalId = global.display.connect('in-fullscreen-changed', () => {
-            const isFullscreen = global.display.get_focus_window()?.is_fullscreen() || false;
+            let isFullscreen = global.display.get_focus_window()?.is_fullscreen() || false;
+            if (!isFullscreen && this._osdWidget && this._settings) {
+                const monitorIdx = this._settings.get_int('monitor-index');
+                const idx = (monitorIdx >= 0 && monitorIdx < global.display.get_n_monitors())
+                    ? monitorIdx
+                    : global.display.get_primary_monitor();
+                isFullscreen = global.display.get_monitor_in_fullscreen(idx);
+            }
             if (this._osdWidget) {
                 this._osdWidget.setFullscreen(isFullscreen);
             }
